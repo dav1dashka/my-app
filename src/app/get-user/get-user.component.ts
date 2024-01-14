@@ -12,47 +12,67 @@ import { GetWeatherComponent } from '../get-weather/get-weather.component';
 export class GetUserComponent implements OnInit {
   httpClient = inject(HttpClient);
   userdata: any = {};
-  isLoaded = false;
-  isSent = false;
+  weatherData: any = [];
+  isLoaded: boolean = false;
+  isSent: boolean = false;
   cardUserData: any = {};
   cardData: any = {};
 
-  @Output() cardFullData = new EventEmitter<Object>();
+  @Output() cardFullData = new EventEmitter<Array<any>>();
 
   ngOnInit(): void {
     this.fetchData();
   }
 
   fetchData() {
-    this.httpClient.get('https://randomuser.me/api/?results=2')
+    this.httpClient.get('https://randomuser.me/api/?results=3')
       .subscribe((data) => {
         this.userdata = data;
         this.setCardUserData();
-        console.log(this.userdata)
       });
   }
 
   setCardUserData() {
-    this.cardUserData['image'] = this.userdata.results[0].picture.medium;
-    this.cardUserData['name'] = this.userdata.results[0].name;
-    this.cardUserData['location'] = this.userdata.results[0].location;
-    this.cardUserData['gender'] = this.userdata.results[0].gender;
-    this.cardUserData['email'] = this.userdata.results[0].email;
+    this.userdata.results.forEach((element: any, key: number) => {
+      this.cardUserData[`user${key}`] = {};
+      this.cardUserData[`user${key}`]['image'] = element.picture.medium;
+      this.cardUserData[`user${key}`]['name'] = element.name;
+      this.cardUserData[`user${key}`]['location'] = element.location;
+      this.cardUserData[`user${key}`]['gender'] = element.gender;
+      this.cardUserData[`user${key}`]['email'] = element.email;
+    });
 
     this.isLoaded = true;
   }
 
   setCardData(data: any) {
-    this.cardData['user'] = this.cardUserData;
-    this.cardData['weather'] = data;
+    this.weatherData.push(data)
 
-    this.isSent = true;
+    if (this.isSent) {
+      this.weatherData.forEach((element: any, key: number) => {
+        this.cardUserData[`user${key}`][`weather`] = {};
+        this.cardUserData[`user${key}`][`weather`]['image'] = element.image;
+        this.cardUserData[`user${key}`][`weather`]['description'] = element.description;
+        this.cardUserData[`user${key}`]['weather']['currentTemp'] = element.currentTemp;
+        this.cardUserData[`user${key}`]['weather']['lowestTemp'] = element.lowestTemp;
+        this.cardUserData[`user${key}`]['weather']['higestTemp'] = element.higestTemp;
+      });
+    }
+
+  }
+
+  handleIsWeatherSent(data: boolean) {
+    this.isSent = data;
   }
 
   handleCardWeatherData(data: any) {
     this.setCardData(data);
+    // I got everywhere similar numbers in weather block
+    // I dont know why but i send in this.setCardData() single object which repeats, 
+    // but in console.log(data) i always got different objects with data
+
     if (this.isSent) {
-      this.cardFullData.emit(this.cardData);
+      this.cardFullData.emit(this.cardUserData);
     }
   }
 }
