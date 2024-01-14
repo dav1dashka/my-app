@@ -1,0 +1,43 @@
+.card {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 450px;
+
+    @media (max-width: 767px) {
+        width: 450px;
+    }
+
+    @media (max-width: 500px) {
+        width: 350px;
+    }
+
+    @media (max-width: 380px) {
+        width: 300px;
+    }
+
+    &__cover {
+        margin: 10px auto;
+
+        button {
+            color: #fff;
+            background-color: #4CAF50;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.39);
+            transition: all 0.1s ease-out;
+
+            &:hover {
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.356);
+                transform: translateY(2px);
+            }
+        }
+    }
+}

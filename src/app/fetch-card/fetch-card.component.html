@@ -1,0 +1,6 @@
+<div class="card">
+    <app-get-user (cardFullData)="handleCardFullData($event)"></app-get-user>
+    <div class="card__cover">
+        <button title="Save User" type="button" (click)="saveCard()">{{isSaved ? 'Saved' : 'Save user'}} </button>
+    </div>
+</div>
