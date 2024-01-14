@@ -16,7 +16,7 @@ export class FetchCardComponent {
   userName: string = '';
   isSaved: boolean = false;
 
-  ngOnInit(): void {
+  ngOnInit(): void  {
     this.data = this.userData;
   }
 
