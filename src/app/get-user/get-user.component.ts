@@ -25,7 +25,7 @@ export class GetUserComponent implements OnInit {
   }
 
   fetchData() {
-    this.httpClient.get('https://randomuser.me/api/?results=3')
+    this.httpClient.get('https://randomuser.me/api/')
       .subscribe((data) => {
         this.userdata = data;
         this.setCardUserData();
