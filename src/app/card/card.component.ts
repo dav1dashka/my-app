@@ -13,7 +13,5 @@ data: any = {};
 
   ngOnInit(): void {
     this.data = JSON.parse(this.userData);
-    console.log(this.data)
   }
-
 }

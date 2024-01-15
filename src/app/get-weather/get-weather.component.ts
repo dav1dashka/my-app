@@ -19,6 +19,7 @@ export class GetWeatherComponent implements OnInit {
   weatherType: any = {};
   weatherCode: number = 0;
   isDay: string = '';
+  counter: number = 0;
 
   weatherDescriptions: {
     [key: string]: {
@@ -320,13 +321,20 @@ export class GetWeatherComponent implements OnInit {
   longitude: number = 0;
 
   @Output() cardWeatherData = new EventEmitter<Object>();
+  @Output() isWeatherSent = new EventEmitter<boolean>();
 
   ngOnInit(): void {
     if (this.IsLoaded) {
-      this.latitude = this.userData.results[0].location.coordinates.latitude;
-      this.longitude = this.userData.results[0].location.coordinates.longitude;
+      this.userData.results.forEach((element: any, key: number) => {
+        this.latitude = element.location.coordinates.latitude;
+        this.longitude = element.location.coordinates.longitude;
 
-      this.fetchData(this.latitude, this.longitude);
+        this.fetchData(this.latitude, this.longitude);
+
+        if (this.counter == key) {
+          this.isWeatherSent.emit(true);
+        }
+      });
     }
   }
 
@@ -356,5 +364,4 @@ export class GetWeatherComponent implements OnInit {
     this.weatherData['higestTemp'] = this.maxTemperature;
     this.weatherData['unitTemp'] = this.data.current_weather_units.temperature;
   }
-
 }

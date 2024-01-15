@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { GetUserComponent } from '../get-user/get-user.component';
 import { GetWeatherComponent } from '../get-weather/get-weather.component';
@@ -11,20 +11,19 @@ import { GetWeatherComponent } from '../get-weather/get-weather.component';
   styleUrl: './fetch-card.component.scss'
 })
 export class FetchCardComponent {
-  cardData: any = {};
+  @Input() userData!: any;
+  data: any;
   userName: string = '';
   isSaved: boolean = false;
-  userNames: any = {};
 
-  handleCardFullData(data: any) {
-    this.cardData = data;
-    this.userName = this.cardData.user.name.first;
+  ngOnInit(): void  {
+    this.data = this.userData;
   }
 
   saveCard() {
-    localStorage.setItem(`${this.userName}Data`, JSON.stringify(this.cardData));
-    
+    this.userName = this.data.name.first;
+    localStorage.setItem(`${this.userName}Data`, JSON.stringify(this.data));
+
     this.isSaved = true;
   }
-
 }
